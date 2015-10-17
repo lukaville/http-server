@@ -1,3 +1,5 @@
+package com.lukaville.server;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,10 +10,16 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class HttpServer {
+    private String host;
     private int port;
+    private String directory;
+    private int cpuNumber;
 
-    public HttpServer(int port) {
+    public HttpServer(String host, int port, String directory, int cpuNumber) {
+        this.host = host;
         this.port = port;
+        this.directory = directory;
+        this.cpuNumber = cpuNumber;
     }
 
     public void run() throws Exception {
