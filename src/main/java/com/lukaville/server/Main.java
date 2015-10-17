@@ -1,6 +1,7 @@
 package com.lukaville.server;
 
 import com.lukaville.server.model.Preferences;
+import io.netty.util.ResourceLeakDetector;
 import org.apache.commons.cli.HelpFormatter;
 
 public class Main {
@@ -13,6 +14,8 @@ public class Main {
         } catch (Exception e) {
             Preferences.printHelp();
         }
+
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
 
         System.out.printf(STARTING_SERVER_MESSAGE, Preferences.getHost(), Preferences.getPort());
 

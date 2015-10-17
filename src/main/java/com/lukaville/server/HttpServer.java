@@ -10,6 +10,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class HttpServer {
+    public static final String SERVER_NAME = "LukavilleHttpServer";
+
     private String host;
     private int port;
     private String directory;
@@ -32,7 +34,7 @@ public class HttpServer {
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
-                     ch.pipeline().addLast(new HttpServerHandler());
+                     ch.pipeline().addLast(new HttpServerHandler(HttpServer.this));
                  }
              })
              .option(ChannelOption.SO_BACKLOG, 128)
@@ -44,5 +46,21 @@ public class HttpServer {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public int getCpuNumber() {
+        return cpuNumber;
     }
 }
