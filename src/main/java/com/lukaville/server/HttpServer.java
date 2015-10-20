@@ -1,5 +1,6 @@
 package com.lukaville.server;
 
+import com.lukaville.server.http.HttpResponseEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -34,11 +35,10 @@ public class HttpServer {
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
+                     ch.pipeline().addLast(new HttpResponseEncoder());
                      ch.pipeline().addLast(new HttpServerHandler(HttpServer.this));
                  }
-             })
-             .option(ChannelOption.SO_BACKLOG, 128)
-             .childOption(ChannelOption.SO_KEEPALIVE, true);
+             });
 
             ChannelFuture f = b.bind(port).sync();
             f.channel().closeFuture().sync();

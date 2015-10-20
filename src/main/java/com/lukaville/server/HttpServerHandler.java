@@ -30,20 +30,7 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
         response.addHeader("Connection", "close");
         response.setBody(body);
 
-        byte[] bytes = response.toBytes();
-
-        PooledByteBufAllocator allocator = PooledByteBufAllocator.DEFAULT;
-        final ByteBuf byteBuf = allocator.directBuffer(bytes.length);
-        byteBuf.writeBytes(bytes);
-
-        ctx.writeAndFlush(byteBuf).addListener(ChannelFutureListener.CLOSE)
-        .addListener(new ChannelFutureListener() {
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (byteBuf.refCnt() > 0) {
-                    byteBuf.release();
-                }
-            }
-        });
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override

@@ -47,8 +47,4 @@ public class HttpResponse {
     public String toString() {
         return getHeaders() + "\n" + body;
     }
-
-    public byte[] toBytes() {
-        return toString().getBytes();
-    }
 }
