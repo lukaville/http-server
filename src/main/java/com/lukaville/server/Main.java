@@ -2,7 +2,6 @@ package com.lukaville.server;
 
 import com.lukaville.server.model.Preferences;
 import io.netty.util.ResourceLeakDetector;
-import org.apache.commons.cli.HelpFormatter;
 
 public class Main {
 
@@ -12,7 +11,7 @@ public class Main {
         try {
             Preferences.fromArguments(args);
         } catch (Exception e) {
-            Preferences.printHelp();
+            System.out.println("Usage: -r: root directory, -c: number of cores.");
         }
 
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);

@@ -1,17 +1,22 @@
 package com.lukaville.server;
 
-import com.lukaville.server.http.HttpResponse;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.PooledByteBufAllocator;
+import com.lukaville.server.http.HttpHeader;
+import com.lukaville.server.http.HttpRequest;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.DefaultFileRegion;
+import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.Date;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
-public class HttpServerHandler extends ChannelInboundHandlerAdapter {
+import static com.lukaville.server.http.HttpHeader.*;
+
+public class HttpServerHandler extends SimpleChannelInboundHandler<HttpRequest> {
+    private static final String READ_FILE_MODE = "r";
     private HttpServer server;
 
     public HttpServerHandler(HttpServer server) {
@@ -19,23 +24,59 @@ public class HttpServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        String body = "<html><h1>Hello, world!</h1></html>";
+    protected void channelRead0(ChannelHandlerContext ctx, HttpRequest request) throws Exception {
+        final String path = request.getPath();
+        if (path == null) {
+            sendError(ctx, HttpHeader.FORBIDDEN);
+            return;
+        }
 
-        HttpResponse response = new HttpResponse(200);
-        response.addHeader("Date", (new Date()).toString());
-        response.addHeader("Server", HttpServer.SERVER_NAME);
-        response.addHeader("Content-Length", String.valueOf(body.length()));
-        response.addHeader("Content-Type", "text/html");
-        response.addHeader("Connection", "close");
-        response.setBody(body);
+        File file = new File(server.getDirectory() + path);
+        if (file.isHidden() || !file.exists()) {
+            sendError(ctx, HttpHeader.NOT_FOUND);
+            return;
+        }
 
-        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+        if (file.isDirectory() || !file.isFile()) {
+            sendError(ctx, HttpHeader.FORBIDDEN);
+            return;
+        }
+
+        writeFile(ctx, file);
+    }
+
+    private void writeFile(ChannelHandlerContext ctx, File file) throws IOException {
+        RandomAccessFile randomAccessFile = null;
+        try {
+            randomAccessFile = new RandomAccessFile(file, READ_FILE_MODE);
+        } catch (FileNotFoundException ignore) {
+            sendError(ctx, NOT_FOUND);
+            return;
+        }
+
+        long fileLength = randomAccessFile.length();
+
+        HttpHeader httpHeader = new HttpHeader(OK);
+        httpHeader.addHeader(HEADER_CONTENT_LENGTH, String.valueOf(fileLength));
+
+        ctx.write(httpHeader);
+        ctx.writeAndFlush(new DefaultFileRegion(randomAccessFile.getChannel(), 0, fileLength),
+                ctx.newProgressivePromise())
+                .addListener(ChannelFutureListener.CLOSE);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    private static void sendError(ChannelHandlerContext ctx, int error) {
+        final String errorBody = "<html><body><h1>Error: " + error + "</h1></body></html>";
+
+        HttpHeader headers = new HttpHeader(error);
+        headers.addHeader(HEADER_CONTENT_LENGTH, String.valueOf(errorBody.length()));
+        ctx.write(headers);
+        ctx.writeAndFlush(Unpooled.wrappedBuffer(errorBody.getBytes())).addListener(ChannelFutureListener.CLOSE);
     }
 }
