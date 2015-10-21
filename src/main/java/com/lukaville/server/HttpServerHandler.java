@@ -1,5 +1,6 @@
 package com.lukaville.server;
 
+import com.lukaville.server.http.ContentTypeDetector;
 import com.lukaville.server.http.HttpHeader;
 import com.lukaville.server.http.HttpRequest;
 import io.netty.buffer.Unpooled;
@@ -7,6 +8,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.DefaultFileRegion;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,6 +65,9 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
 
         HttpHeader httpHeader = new HttpHeader(OK);
         httpHeader.addHeader(HEADER_CONTENT_LENGTH, String.valueOf(fileLength));
+
+        String extension = FilenameUtils.getExtension(file.getPath());
+        httpHeader.addHeader(HEADER_CONTENT_TYPE, ContentTypeDetector.getContentType(extension));
 
         ctx.write(httpHeader);
         ctx.writeAndFlush(new DefaultFileRegion(randomAccessFile.getChannel(), 0, fileLength),

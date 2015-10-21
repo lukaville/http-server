@@ -17,8 +17,6 @@ public class HttpHeader {
 
     private static Map<Integer, String> statusDescriptions = new HashMap<Integer, String>();
 
-    public static final String DEFAULT_CONTENT_TYPE = "text/html";
-
     // HTTP header names
     public static final String HEADER_CONTENT_LENGTH = "Content-Length";
     public static final String HEADER_DATE = "Date";
@@ -49,12 +47,12 @@ public class HttpHeader {
     private void addDefaultHeaders() {
         addHeader(HEADER_DATE, (new Date()).toString());
         addHeader(HEADER_SERVER, HttpServer.SERVER_NAME);
-        addHeader(HEADER_CONTENT_TYPE, DEFAULT_CONTENT_TYPE);
+        addHeader(HEADER_CONTENT_TYPE, ContentTypeDetector.DEFAULT_CONTENT_TYPE);
         addHeader(HEADER_CONNECTION, "close");
     }
 
     public String getHeaders() {
-        String mainHeader = String.format("HTTP/%s %d %s",
+        final String mainHeader = String.format("HTTP/%s %d %s",
                 HTTP_VERSION, statusCode, statusDescriptions.get(statusCode));
 
         StringBuilder sb = new StringBuilder();
