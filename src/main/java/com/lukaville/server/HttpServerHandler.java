@@ -1,6 +1,7 @@
 package com.lukaville.server;
 
 import com.lukaville.server.http.ContentTypeDetector;
+import com.lukaville.server.http.ErrorGenerator;
 import com.lukaville.server.http.HttpHeader;
 import com.lukaville.server.http.HttpRequest;
 import io.netty.buffer.Unpooled;
@@ -82,7 +83,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
     }
 
     private static void sendError(ChannelHandlerContext ctx, int error) {
-        final String errorBody = "<html><body><h1>Error: " + error + "</h1></body></html>";
+        final String errorBody = ErrorGenerator.generateErrorPage(error, HttpHeader.statusDescriptions.get(error));
 
         HttpHeader headers = new HttpHeader(error);
         headers.addHeader(HEADER_CONTENT_LENGTH, String.valueOf(errorBody.length()));

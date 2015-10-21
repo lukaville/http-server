@@ -15,7 +15,7 @@ public class HttpHeader {
     private int statusCode;
     private Map<String, String> headers = new HashMap<String, String>();
 
-    private static Map<Integer, String> statusDescriptions = new HashMap<Integer, String>();
+    public static Map<Integer, String> statusDescriptions = new HashMap<Integer, String>();
 
     // HTTP header names
     public static final String HEADER_CONTENT_LENGTH = "Content-Length";
