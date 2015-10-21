@@ -5,6 +5,7 @@ import com.sun.istack.internal.Nullable;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.regex.Pattern;
 
 /**
  * Created by nickolay on 21.10.15.
@@ -39,6 +40,10 @@ public class HttpRequest {
         return checkUri(uri);
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
     @Nullable
     private static String checkUri(String uri) {
         try {
@@ -48,6 +53,10 @@ public class HttpRequest {
         }
 
         if (uri.isEmpty() || uri.charAt(0) != '/') {
+            return null;
+        }
+
+        if (uri.contains("/.") || uri.contains("./") || uri.charAt(uri.length() - 1) == '.') {
             return null;
         }
 
@@ -82,6 +91,12 @@ public class HttpRequest {
     private static String parseUri(String request) throws UnsupportedEncodingException {
         int uriStart = request.indexOf(" ") + 1;
         String uri = request.substring(uriStart, request.indexOf(" ", uriStart));
+
+        int queryStart = uri.indexOf('?');
+        if (queryStart > -1) {
+            uri = uri.substring(0, queryStart);
+        }
+
         return URLDecoder.decode(uri, URL_CHARSET);
     }
 }

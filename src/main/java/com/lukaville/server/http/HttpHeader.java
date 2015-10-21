@@ -56,9 +56,9 @@ public class HttpHeader {
                 HTTP_VERSION, statusCode, statusDescriptions.get(statusCode));
 
         StringBuilder sb = new StringBuilder();
-        sb.append(mainHeader).append("\n");
+        sb.append(mainHeader).append("\r\n");
         for(Map.Entry<String, String> entry : headers.entrySet()) {
-            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");;
+            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\r\n");;
         }
 
         return sb.toString();
@@ -70,6 +70,6 @@ public class HttpHeader {
 
     @Override
     public String toString() {
-        return getHeaders() + "\n";
+        return getHeaders() + "\r\n";
     }
 }

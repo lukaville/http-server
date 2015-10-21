@@ -1,6 +1,5 @@
-package com.lukaville.server.model;
+package com.lukaville.server.preferences;
 
-import joptsimple.HelpFormatter;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -11,6 +10,7 @@ public class Preferences {
     private static String host = "0.0.0.0";
     private static int port = 5555;
     private static String directory;
+    private static String indexFile = "index.html";
     private static int cpuNumber;
 
     private static OptionParser parser = new OptionParser("r:n:");
@@ -51,5 +51,9 @@ public class Preferences {
 
     public static void setCpuNumber(int cpuNumber) {
         Preferences.cpuNumber = cpuNumber;
+    }
+
+    public static String getIndexFile() {
+        return indexFile;
     }
 }

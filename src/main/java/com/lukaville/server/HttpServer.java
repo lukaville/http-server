@@ -17,12 +17,14 @@ public class HttpServer {
     private String host;
     private int port;
     private String directory;
+    private String indexFile;
     private int cpuNumber;
 
-    public HttpServer(String host, int port, String directory, int cpuNumber) {
+    public HttpServer(String host, int port, String directory, String indexFile, int cpuNumber) {
         this.host = host;
         this.port = port;
         this.directory = directory;
+        this.indexFile = indexFile;
         this.cpuNumber = cpuNumber;
     }
 
@@ -65,5 +67,9 @@ public class HttpServer {
 
     public int getCpuNumber() {
         return cpuNumber;
+    }
+
+    public String getIndexFile() {
+        return indexFile;
     }
 }

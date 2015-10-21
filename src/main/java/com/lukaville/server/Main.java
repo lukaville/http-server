@@ -1,6 +1,6 @@
 package com.lukaville.server;
 
-import com.lukaville.server.model.Preferences;
+import com.lukaville.server.preferences.Preferences;
 import io.netty.util.ResourceLeakDetector;
 
 public class Main {
@@ -22,6 +22,7 @@ public class Main {
                 Preferences.getHost(),
                 Preferences.getPort(),
                 Preferences.getDirectory(),
+                Preferences.getIndexFile(),
                 Preferences.getCpuNumber()
         );
         server.run();
