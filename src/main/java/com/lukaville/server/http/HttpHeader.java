@@ -31,12 +31,14 @@ public class HttpHeader {
     public static final int NOT_FOUND = 404;
     public static final int FOUND = 302;
     public static final int FORBIDDEN = 403;
+    public static final int BAD_REQUEST = 400;
 
     static {
         statusDescriptions.put(OK, "OK");
         statusDescriptions.put(NOT_FOUND, "Not found");
         statusDescriptions.put(FOUND, "Found");
         statusDescriptions.put(FORBIDDEN, "Forbidden");
+        statusDescriptions.put(BAD_REQUEST, "Bad request");
     }
 
     public HttpHeader(int statusCode) {

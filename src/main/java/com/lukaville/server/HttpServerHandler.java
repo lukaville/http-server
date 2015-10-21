@@ -25,6 +25,11 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpRequest request) throws Exception {
+        if (!request.isValid()) {
+            sendError(ctx, HttpHeader.BAD_REQUEST);
+            return;
+        }
+
         final String path = request.getPath();
         if (path == null) {
             sendError(ctx, HttpHeader.FORBIDDEN);

@@ -12,6 +12,13 @@ import java.util.List;
 public class HttpRequestDecoder extends MessageToMessageDecoder<String> {
     @Override
     protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
-        out.add(new HttpRequest("/wikipedia_russiad.html"));
+        HttpRequest request = null;
+        try {
+            request = HttpRequest.fromString(msg);
+        } catch (Exception ignored) {
+            request = new HttpRequest(false);
+        }
+
+        out.add(request);
     }
 }
