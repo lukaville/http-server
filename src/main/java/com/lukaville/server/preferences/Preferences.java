@@ -13,12 +13,12 @@ public class Preferences {
     private static String indexFile = "index.html";
     private static int cpuNumber;
 
-    private static OptionParser parser = new OptionParser("r:n:");
+    private static OptionParser parser = new OptionParser("r:c:");
 
     public static void fromArguments(String[] args) {
         OptionSet options = parser.parse(args);
         directory = (String) options.valueOf("r");
-        cpuNumber = Integer.parseInt((String) options.valueOf("n"));
+        cpuNumber = Integer.parseInt((String) options.valueOf("c"));
     }
 
     public static String getHost() {

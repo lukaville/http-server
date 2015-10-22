@@ -1,2 +1,2 @@
 #!/bin/sh
-java -cp target/http-server-1.0-jar-with-dependencies.jar com.lukaville.server.Main
+java -cp target/http-server-1.0-jar-with-dependencies.jar com.lukaville.server.Main "$@"
