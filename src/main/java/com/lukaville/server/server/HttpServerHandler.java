@@ -1,4 +1,4 @@
-package com.lukaville.server;
+package com.lukaville.server.server;
 
 import com.lukaville.server.http.ContentTypeDetector;
 import com.lukaville.server.http.ErrorGenerator;

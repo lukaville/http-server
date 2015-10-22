@@ -1,6 +1,7 @@
 package com.lukaville.server;
 
 import com.lukaville.server.preferences.Preferences;
+import com.lukaville.server.server.HttpServer;
 import io.netty.util.ResourceLeakDetector;
 
 public class Main {

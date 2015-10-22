@@ -1,6 +1,6 @@
 package com.lukaville.server.http;
 
-import com.lukaville.server.HttpServer;
+import com.lukaville.server.server.HttpServer;
 
 import java.util.Date;
 import java.util.HashMap;

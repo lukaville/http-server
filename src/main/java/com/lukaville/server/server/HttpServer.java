@@ -1,4 +1,4 @@
-package com.lukaville.server;
+package com.lukaville.server.server;
 
 import com.lukaville.server.codec.HttpHeaderEncoder;
 import com.lukaville.server.codec.HttpRequestDecoder;
@@ -12,7 +12,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 
 public class HttpServer {
-    public static final String SERVER_NAME = "LukavilleHttpServer";
+    public static final String SERVER_NAME = "Typhoon";
 
     private String host;
     private int port;
