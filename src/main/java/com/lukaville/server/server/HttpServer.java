@@ -29,7 +29,7 @@ public class HttpServer {
     }
 
     public void run() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(cpuNumber);
         EventLoopGroup workerGroup = new NioEventLoopGroup(cpuNumber);
         try {
             ServerBootstrap b = new ServerBootstrap();

@@ -20,7 +20,7 @@ public class HttpHeader {
     // HTTP header names
     public static final String HEADER_CONTENT_LENGTH = "Content-Length";
     public static final String HEADER_DATE = "Date";
-    public static final String HEADER_SERVER = "SERVER";
+    public static final String HEADER_SERVER = "Server";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONNECTION = "Connection";
 

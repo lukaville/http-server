@@ -8,7 +8,7 @@ import joptsimple.OptionSet;
  */
 public class Preferences {
     private static String host = "0.0.0.0";
-    private static int port = 80;
+    private static int port = 8080;
     private static String directory;
     private static String indexFile = "index.html";
     private static int cpuNumber;
